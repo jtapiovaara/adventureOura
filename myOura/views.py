@@ -117,11 +117,12 @@ def ouraapi(request):
     # Suunniteltujen urheilupäivien loogiset nimet
     urkkadaynimet = Sportdays.objects.filter(ourauser__firstname__iexact=you).order_by('days')
     sdays = urkkadaynimet.filter().values_list('days', flat=True)
-
+    kova_tintensity = Ourauser.objects.get(username=kayttaja).tintensity
     sporttiminuutit = 0
+
     for i in pvm_pvmh:
         sporttiminuutit += pvm_pvmh[i]
-        if pvm_pvmh[i] > 2:
+        if pvm_pvmh[i] > kova_tintensity:
             with open('lauantairaportti.txt', 'a') as f:
                 f.write('Päivä ' + str(i) + ' Urheilit kovalla pulssilla ' + str(pvm_pvmh[i]) + ' minuuttia.')
             if str(i) in sdays:

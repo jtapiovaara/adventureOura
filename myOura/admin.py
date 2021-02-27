@@ -15,6 +15,7 @@ class OurauserAdmin(admin.ModelAdmin):
         ('Nimi', {'fields': ['firstname', 'lastname']}),
         ('Urheilupäivät, merkitse milloin teet rasittavaa urheilua 3 min tai kauemmin. '
          '0 = Maanantai ja siitä eteenpäin.', {'fields': ['sportdays']}),
+        ('Kun urheilet, jossain vaiheessa suoritus on ns. Kova, esim. 4 minuutin jälkeen.', {'fields': ['tintensity']}),
         (_('Oura Tiedot'), {
             'classes': ('collapse',),
             'fields': (

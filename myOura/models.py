@@ -23,6 +23,7 @@ class Ourauser(models.Model):
     username = models.CharField(max_length=24, blank=True)
     ourakey = models.CharField(max_length=64, blank=True)
     sportdays = models.ManyToManyField('Sportdays', blank=True)
+    tintensity = models.IntegerField(blank=True, null=True, default=2)
 
     def __str__(self):
         return self.firstname
