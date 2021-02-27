@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% block page_content %}
+{% load static %}
+    <script>
+        historia=()=> {
+            document.getElementById('kouluTodistus').style.display='none'
+            document.getElementById('todistusHistoria').style.display='block'
+        }
+        perus=()=> {
+            document.getElementById('todistusHistoria').style.display='none'
+            document.getElementById('kouluTodistus').style.display='block'
+        }
+        aktiivisuushistoria=()=> {
+            document.getElementById('aktiivisuus').style.display='none'
+            document.getElementById('aktiivisuusHistoria').style.display='block'
+        }
+        aktiivisuus=()=> {
+            document.getElementById('aktiivisuusHistoria').style.display='none'
+            document.getElementById('aktiivisuus').style.display='block'
+        }
+        takabmi=()=> {
+            document.getElementById('bmiTaka').style.display='none'
+            document.getElementById('bmiEtu').style.display='block'
+        }
+        etubmi=()=> {
+            document.getElementById('bmiEtu').style.display='none'
+            document.getElementById('bmiTaka').style.display='block'
+        }
+    </script>
+
+    <style>
+        body {
+            background-image: url("{% static "images/ouraring.jpg" %}");
+            background-size: 35%;
+            background-repeat: repeat-x;
+        }
+        h4 {
+            font-size:3vw
+        }
+        #kouluTodistus {
+            height: 280px;
+        }
+        #todistusHistoria {
+            height: 280px;
+        }
+        #aktiivisuus {
+            height: 280px;
+        }
+        #aktiivisuusHistoria {
+            height: 280px;
+        }
+</style>
+
+<div class="container w3-center" style="opacity: 0.7">
+<small style="font-size:4vw; margin-top: 138px">Moi {{ context.you }}</small>
+    <h3 style="font-size:4vw; margin-top: 138px"><b>your Advanced OURA Ring page</b></h3>
+    <div class="card shadow" style="padding: 20px">
+        <h4>How did I sleep? Syvän unen määrä, Min</h4>
+        <h1 style="font-size: xxx-large; text-align: center"><b>{{ context.deepsleepamount }} </b></h1>
+            <h4 style="text-align: center"><b>{{ context.deepsleeppercentage }}% unimäärästä{{ context.sleepstory }}</b></h4>
+    </div>
+
+    <div id="kouluTodistus" class="card shadow w3-animate-left"
+         style="padding: 20px" onclick="historia()">
+        <h4>Am I ready? Koulutodistus.</h4>
+        <h1 style="font-size: xxx-large"><b>{{ context.readydata }}</b></h1>
+        {% if context.valmiusero > 0 %}
+                <h2 lass="fa" style="color: green">
+                    <b>Hyvin menee! Parempi vireys kuin eilen.</b>
+                    <small><button style="border-radius: 50%; background-color: green">{{ context.valmiusero }}</button></small></h2>
+        {% else %}
+                <h2 class="fa" style="color: crimson">
+                    <b>Tsemppiä päivään, eilen olit vireämpi.</b>
+                    <small><button style="border-radius: 50%; background-color: crimson">{{ context.valmiusero }}</button></small></h2>
+        {% endif %}
+    </div>
+    <div id="todistusHistoria" class="card shadow w3-animate-right"
+         style="padding: 20px; display: none" onclick="perus()">
+        <h4>Seitsemän päivää valmiustilaa.</h4>
+        <canvas id="myReadiness" style="padding: 10px"></canvas>
+    </div>
+    <div id="aktiivisuus" class="card shadow w3-animate-left"
+         style="padding: 20px; display: block" onclick="aktiivisuushistoria()">
+        <h3 class="w3-padding" style="text-align: center"><small>{{ context.steps }} metriä menty tänään</small></h3>
+        {% if context.okei == 'parempi' %}
+            <h2 class="fa fa-heart" style="color: crimson"><br>
+                <b style="color: green">
+                    Hyvin menee! Olet liikkunut enemmän kuin eilen.</b></h2>
+        {% else %}
+            <h2 class="fa fa-thumbs-down" style="color: darkblue"><br>
+                <b style="color: darkblue">
+                    Olet liikkunut vähemmän kuin eilen, pystyt parempaan!</b></h2>
+        {% endif %}
+    </div>
+    <div id="aktiivisuusHistoria" class="card shadow w3-animate-right"
+         style="padding: 20px; display: none" onclick="aktiivisuus()">
+        <h4>Seitsemän päivää aktiivisuutta</h4>
+        <canvas id="myActivityness"></canvas>
+    </div>
+
+    <div id="bmiEtu" class="card shadow w3-animate-left" style="padding: 20px" onclick="etubmi()">
+        <h4>BMI</h4>
+        <h1 style="font-size: xxx-large; text-align: center"><b>{{ context.bmi }}</b></h1>
+        {% if context.voima > 0 %}
+            <h5 style="text-align: center">Okei, tänään vähän voimaliikuntaakin, jopa {{ context.voima }} minuuttia.</h5>
+        {% endif %}
+        <small>Muista! {% for a in context.urkkadaynimet %} {{ a.get_days_display }}, {% endfor %} aina vähän kovempaa.</small>
+        <canvas id="myMoves" style="padding: 10px"></canvas>
+    </div>
+    <div id="bmiTaka" class="card shadow w3-animate-right" style="padding: 20px; display: none" onclick="takabmi()">
+        {% for rivi in context.raportti %}
+            {{ rivi|linebreaks }}
+        {% endfor %}
+    </div>
+    <div class="card shadow" style="padding: 20px">
+        <h4>Oura ehdottaa:</h4>
+        {% if context.unille == None %}
+        <h4 style="text-align: center"><b>Huomaa: {{ context.nukkumaanko }}</b></h4>
+        {% else %}
+            <h2><b>Viimeistään {{ context.pillowtime }} nukkumaan</b></h2>
+        {% endif %}
+    </div>
+    <div class="w3-padding" style="text-align: center">
+        <button class="w3-btn w3-ripple">
+            <a href="{% url 'logout' %}?next=/projektit/">Logout & Leave</a></button>
+    </div>
+</div>
+<script>
+        let i = 1
+        let config2 = {
+          type: 'bar',
+          data: {
+            datasets: [{
+              data: [
+                  {% for item in context.readydatahistory %}
+                  {{ item.score }},
+                  {% endfor %}
+              ],
+              label: 'My latest readenisesses (7 days)'
+            }],
+            labels: ['','','','','','','']
+          },
+          options: {
+              responsive: true,
+              legend: {
+                  labels: {
+                      fontFamily: "'PoliteType', 'Arial'"
+                  }
+              },
+          }
+        };
+        let ctx1 = document.getElementById('myReadiness').getContext('2d');
+        let myReadiness = new Chart(ctx1, config2);
+        </script>
+<script>
+        let config3 = {
+          type: 'bar',
+          data: {
+            datasets: [{
+              data: [
+                  {% for jalka in context.stepsit %}
+                      {{ jalka.steps }},
+                  {% endfor %}
+              ],
+              label: 'My latest activitynesses (7 days)'
+            }],
+            labels: ['','','','','','','']
+          },
+          options: {
+              responsive: true,
+              legend: {
+                  labels: {
+                      fontFamily: "'PoliteType', 'Arial'"
+                  }
+              },
+          }
+        };
+        let ctx3 = document.getElementById('myActivityness').getContext('2d');
+        let myActivityness = new Chart(ctx3, config3);
+        </script>
+<script>
+        let config1 = {
+          type: 'line',
+          data: {
+            datasets: [{
+              data: [
+                  {% for a in context.a_2h %}
+                  {{ a }},
+                  {% endfor %}
+              ],
+              label: 'My latest moves (2h)'
+            }],
+            labels: ['','','','','','','','','','','','','','','','','','','','','','','','']
+          },
+          options: {
+              responsive: true,
+              legend: {
+                  labels: {
+                      fontFamily: "'PoliteType', 'Arial'"
+                  }
+              },
+              scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        max: 5
+                    }
+                }]
+              },
+              elements: {
+                  point: {
+                      pointStyle: 'circle',
+                      radius: 3
+                  },
+                  line: {
+                      backgroundColor: 'rgba(50, 200, 100, 0.1)'
+                  }
+              }
+          }
+        };
+        let ctx2 = document.getElementById('myMoves').getContext('2d');
+        let myMoves = new Chart(ctx2, config1);
+        </script>
+{% endblock %}

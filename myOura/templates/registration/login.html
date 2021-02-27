@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+    {% load crispy_forms_tags %}
+        <title>Kirjaudu</title>
+    <div class="container">
+        <form method="POST" class="form-group">
+            {% csrf_token %}
+            {{ form|crispy }}
+        {#    <p>Jos et ole vielä rekisteröitynyt, voit tehdä sen <a href="/register">täällä.</a> </p>#}
+            <button type="submit" class="btn btn-success">Sisään</button>
+        </form>
+    </div>
+
+{% endblock %}
