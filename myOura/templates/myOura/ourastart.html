@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block page_content %}
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+      <style>
+          body {
+              background: black;
+          }
+      </style>
+{% load static %}
+    <body>
+    <div class="w3-container w3-center w3-margin w3-padding" style="background-color: black">
+        <a class="w3-btn w3-xxlarge  w3-white" href="{% url 'ouracall'%}"
+           data-toggle="tooltip" style="text-decoration: none;">
+            <img src="{% static 'images/ouraring_work.jpg' %}"><br>Oura Adventure</a>
+        </a>
+    </div>
+    </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+{% endblock %}

@@ -102,10 +102,11 @@
         <h4>BMI</h4>
         <h1 style="font-size: xxx-large; text-align: center"><b>{{ context.bmi }}</b></h1>
         {% if context.voima > 0 %}
-            <h5 style="text-align: center">Okei, tänään vähän voimaliikuntaakin, jopa {{ context.voima }} minuuttia.</h5>
+            <small style="text-align: center">Okei, tänään vähän voimaliikuntaakin, jopa {{ context.voima }} minuuttia.</small>
         {% endif %}
-        <small>Muista! {% for a in context.urkkadaynimet %} {{ a.get_days_display }}, {% endfor %} aina vähän kovempaa.</small>
+        <small>Muista! {% for a in context.urkkadaynimet %} <b>{{ a.get_days_display }},</b> {% endfor %} aina vähän kovempaa.</small>
         <canvas id="myMoves" style="padding: 10px"></canvas>
+        <small style="text-align: center">Knoppitieto: Olet askeltanut <b>{{ context.steps_vk }}</b> kertaa viikossa.</small>
     </div>
     <div id="bmiTaka" class="card shadow w3-animate-right" style="padding: 20px; display: none" onclick="takabmi()">
         {% for rivi in context.raportti %}
@@ -120,9 +121,15 @@
             <h2><b>Viimeistään {{ context.pillowtime }} nukkumaan</b></h2>
         {% endif %}
     </div>
+{#    <div class="w3-padding" style="text-align: center">#}
+{#        <button class="w3-btn w3-ripple">#}
+{#            <a href="{% url 'logout' %}?next=/login/">Logout & Leave</a></button>#}
+{#    </div>#}
     <div class="w3-padding" style="text-align: center">
         <button class="w3-btn w3-ripple">
-            <a href="{% url 'logout' %}?next=/login/">Logout & Leave</a></button>
+            <a href="{% url 'ourastart' %}" class="w3-ripple">Leave</a></button>
+        <button class="w3-btn w3-ripple">
+            <a href="{% url 'logout' %}?next=/oura/">Logout & Leave</a></button>
     </div>
 </div>
 <script>

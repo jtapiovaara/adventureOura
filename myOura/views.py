@@ -8,7 +8,11 @@ from django.contrib.auth.admin import User
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
-from .models import Ourauser, Sportdays
+from .models import Ourauser, Sportdays, Hqmessages
+
+
+def ourastart(request):
+    return render(request, 'myOura/ourastart.html')
 
 
 def logout(request):
@@ -27,6 +31,7 @@ def ouraapi(request):
     assert isinstance(Ourauser.objects.get(username=kayttaja).ourakey, object)
     omaouraapi = Ourauser.objects.get(username=kayttaja).ourakey
     you = Ourauser.objects.get(username=kayttaja).firstname
+    messages = Hqmessages.objects.all()
 
     today = datetime.date.today()
     # eilinen = str(today - datetime.timedelta(days=1))
@@ -89,6 +94,10 @@ def ouraapi(request):
 
     # Askelet tänään
     steps = a['activity'][-1]['steps']
+    steps_vk = 0
+    for i in range(0, 7):
+        steps_pv = a['activity'][i]['steps']
+        steps_vk = steps_vk + steps_pv
 
     # Raskas urheilu eilen
     voima = a['activity'][-1]['high']
@@ -110,10 +119,7 @@ def ouraapi(request):
     pvmh = weekstrength
     pvm_pvmh = dict(zip(pvm, pvmh))
 
-    # Nämä on Django Adminissa määritetyt omat harjoittelupäivät/viikko.
-    # Huomaa, tässä lasketaan hikisuoritukseksi vasta kun on vähintään kolme minuuttia kovaa pulssia (pvm_pvmh[i] > 2)
-    #TODO päivittäiseen hikisuotitukseen riittävä harjoittelumäärä käyttäjän omaksi valinnaksi/asetukseksi
-
+    # Alla on Django Adminissa määritetyt omat harjoittelupäivät/viikko.
     # Suunniteltujen urheilupäivien loogiset nimet
     urkkadaynimet = Sportdays.objects.filter(ourauser__firstname__iexact=you).order_by('days')
     sdays = urkkadaynimet.filter().values_list('days', flat=True)
@@ -127,17 +133,17 @@ def ouraapi(request):
                 f.write('Päivä ' + str(i) + ' Urheilit kovalla pulssilla ' + str(pvm_pvmh[i]) + ' minuuttia.')
             if str(i) in sdays:
                 with open('lauantairaportti.txt', 'a') as f:
-                    f.write(' Bene, kuten oli suunnitelmakin.')
+                    f.write(' ' + messages[0].longdesc)
             else:
                 with open('lauantairaportti.txt', 'a') as f:
-                    f.write(' Hyvä homma, mutta muista myös levätä välillä.')
+                    f.write(' ' + messages[1].longdesc)
         else:
             if str(i) in sdays:
                 with open('lauantairaportti.txt', 'a') as f:
-                    f.write('Päivä ' + str(i) + ' Jaahas et sitten ehtinyt urheilla, vaikka olisi pitänyt.')
+                    f.write('Päivä ' + str(i) + ' ' + messages[2].longdesc)
             else:
                 with open('lauantairaportti.txt', 'a') as f:
-                    f.write('Päivä ' + str(i) + ' Välipäivä. Suunnitelman mukaan mennään.')
+                    f.write('Päivä ' + str(i) + ' ' + messages[3].longdesc)
         with open('lauantairaportti.txt', 'a') as f:
             f.write('\n')
     with open('lauantairaportti.txt', 'a') as f:
@@ -210,5 +216,6 @@ def ouraapi(request):
         'pillowtime': pillowtime,
         'valmiusero': valmiusero,
         'raportti': raportti,
+        'steps_vk': steps_vk,
     }
     return render(request, 'myOura/ouraring.html', {'context': context})

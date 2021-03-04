@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.forms import CheckboxSelectMultiple
 
-from .models import Ourauser, Sportdays
+from .models import Ourauser, Sportdays, Hqmessages
 
 
 class OurauserAdmin(admin.ModelAdmin):
@@ -29,5 +29,10 @@ class OurauserAdmin(admin.ModelAdmin):
     list_display = ['firstname']
 
 
+class HqmessagesAdmin(admin.ModelAdmin):
+    list_display = ('shortdesc', 'meaning')
+
+
 admin.site.register(Ourauser, OurauserAdmin)
 admin.site.register(Sportdays)
+admin.site.register(Hqmessages, HqmessagesAdmin)
