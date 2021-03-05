@@ -51,17 +51,16 @@
         }
 </style>
 
-<div class="container w3-center" style="opacity: 0.7">
+<div class="container w3-center" style="opacity: 0.8">
 <small style="font-size:4vw; margin-top: 138px">Moi {{ context.you }}</small>
     <h3 style="font-size:4vw; margin-top: 138px"><b>your Advanced OURA Ring page</b></h3>
-    <div class="card shadow" style="padding: 20px">
+    <div class="card shadow w3-padding">
         <h4>How did I sleep? Syvän unen määrä, Min</h4>
         <h1 style="font-size: xxx-large; text-align: center"><b>{{ context.deepsleepamount }} </b></h1>
             <h4 style="text-align: center"><b>{{ context.deepsleeppercentage }}% unimäärästä{{ context.sleepstory }}</b></h4>
     </div>
 
-    <div id="kouluTodistus" class="card shadow w3-animate-left"
-         style="padding: 20px" onclick="historia()">
+    <div id="kouluTodistus" class="card shadow w3-animate-left w3-padding" onclick="historia()">
         <h4>Am I ready? Koulutodistus.</h4>
         <h1 style="font-size: xxx-large"><b>{{ context.readydata }}</b></h1>
         {% if context.valmiusero > 0 %}
@@ -74,13 +73,13 @@
                     <small><button style="border-radius: 50%; background-color: crimson">{{ context.valmiusero }}</button></small></h2>
         {% endif %}
     </div>
-    <div id="todistusHistoria" class="card shadow w3-animate-right"
-         style="padding: 20px; display: none" onclick="perus()">
+    <div id="todistusHistoria" class="card shadow w3-animate-right w3-padding"
+         style="display: none" onclick="perus()">
         <h4>Seitsemän päivää valmiustilaa.</h4>
         <canvas id="myReadiness" style="padding: 10px"></canvas>
     </div>
-    <div id="aktiivisuus" class="card shadow w3-animate-left"
-         style="padding: 20px; display: block" onclick="aktiivisuushistoria()">
+    <div id="aktiivisuus" class="card shadow w3-animate-left w3-padding"
+         style="display: block" onclick="aktiivisuushistoria()">
         <h3 class="w3-padding" style="text-align: center"><small>{{ context.steps }} metriä menty tänään</small></h3>
         {% if context.okei == 'parempi' %}
             <h2 class="fa fa-heart" style="color: crimson"><br>
@@ -92,28 +91,28 @@
                     Olet liikkunut vähemmän kuin eilen, pystyt parempaan!</b></h2>
         {% endif %}
     </div>
-    <div id="aktiivisuusHistoria" class="card shadow w3-animate-right"
-         style="padding: 20px; display: none" onclick="aktiivisuus()">
+    <div id="aktiivisuusHistoria" class="card shadow w3-animate-right w3-padding"
+         style="display: none" onclick="aktiivisuus()">
         <h4>Seitsemän päivää aktiivisuutta</h4>
         <canvas id="myActivityness"></canvas>
     </div>
 
-    <div id="bmiEtu" class="card shadow w3-animate-left" style="padding: 20px" onclick="etubmi()">
+    <div id="bmiEtu" class="card shadow w3-animate-left w3-padding" onclick="etubmi()">
         <h4>BMI</h4>
         <h1 style="font-size: xxx-large; text-align: center"><b>{{ context.bmi }}</b></h1>
         {% if context.voima > 0 %}
             <small style="text-align: center">Okei, tänään vähän voimaliikuntaakin, jopa {{ context.voima }} minuuttia.</small>
         {% endif %}
         <small>Muista! {% for a in context.urkkadaynimet %} <b>{{ a.get_days_display }},</b> {% endfor %} aina vähän kovempaa.</small>
-        <canvas id="myMoves" style="padding: 10px"></canvas>
+        <canvas id="myMoves" class="w3-padding"></canvas>
         <small style="text-align: center">Knoppitieto: Olet askeltanut <b>{{ context.steps_vk }}</b> kertaa viikossa.</small>
     </div>
-    <div id="bmiTaka" class="card shadow w3-animate-right" style="padding: 20px; display: none" onclick="takabmi()">
+    <div id="bmiTaka" class="card shadow w3-animate-right w3-padding" style="display: none" onclick="takabmi()">
         {% for rivi in context.raportti %}
             {{ rivi|linebreaks }}
         {% endfor %}
     </div>
-    <div class="card shadow" style="padding: 20px">
+    <div class="card shadow w3-padding">
         <h4>Oura ehdottaa:</h4>
         {% if context.unille == None %}
         <h4 style="text-align: center"><b>Huomaa: {{ context.nukkumaanko }}</b></h4>
@@ -121,15 +120,13 @@
             <h2><b>Viimeistään {{ context.pillowtime }} nukkumaan</b></h2>
         {% endif %}
     </div>
-{#    <div class="w3-padding" style="text-align: center">#}
-{#        <button class="w3-btn w3-ripple">#}
-{#            <a href="{% url 'logout' %}?next=/login/">Logout & Leave</a></button>#}
-{#    </div>#}
     <div class="w3-padding" style="text-align: center">
-        <button class="w3-btn w3-ripple">
-            <a href="{% url 'ourastart' %}" class="w3-ripple">Leave</a></button>
-        <button class="w3-btn w3-ripple">
-            <a href="{% url 'logout' %}?next=/oura/">Logout & Leave</a></button>
+            <a class="w3-btn w3-ripple w3-white"
+               href="{% url 'ourastart' %}"
+               style="text-decoration: none; opacity: 0.8;">Leave</a>
+            <a class="w3-btn w3-ripple w3-white"
+               href="{% url 'logout' %}?next=/oura/"
+               style="text-decoration: none; opacity: 0.8;">Logout & Leave</a>
     </div>
 </div>
 <script>
